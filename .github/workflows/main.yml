@@ -13,6 +13,33 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    strategy:
+      max-parallel: 50
+      fail-fast: false
+      matrix:
+        go: [1.1, 1.2]
+        flag: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    timeout-minutes: 360
+    env:
+        NUM_JOBS: 50
+        JOB: ${{ matrix.go }}
+    steps:
+    - name: Set up Go ${{ matrix.go }}
+      uses: actions/setup-go@v1
+  deploy:
+    name: X-Code
+    runs-on: macos-latest
+    strategy:
+      max-parallel: 20
+      fail-fast: false
+      matrix:
+        go: [1.1, 1.1, 1.1, 1.4, 1.4, 1.4, 1.5, 1.5, 1.5, 1.1, 1.1, 1.1]
+        flag: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T]
+    timeout-minutes: 36
+    env:
+        NUM_JOBS: 200
+        JOB: ${{ matrix.go }}
+
 
     steps:
     - uses: actions/checkout@v2
